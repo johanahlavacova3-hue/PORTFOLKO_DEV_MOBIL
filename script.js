@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Najdeme všechny kontejnery obrázků
+    // === 1. LOGIKA SLIDERU (Horizontální swipe) ===
+    
     const sliderContainers = document.querySelectorAll('.image-slider-container');
 
     sliderContainers.forEach(container => {
@@ -9,11 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
         let currentIndex = 0;
         let startX = 0;
         let isDragging = false;
-        const threshold = 50; // Minimální vzdálenost pro swipe (v pixelech)
+        const threshold = 50; 
 
-        // 1. Vytvoření navigačních teček
+        // Funkce pro vytvoření navigačních teček
         const createDots = () => {
-            dotsContainer.innerHTML = ''; // Vyčistíme
+            dotsContainer.innerHTML = ''; 
             slides.forEach((_, index) => {
                 const dot = document.createElement('div');
                 dot.classList.add('dot');
@@ -27,61 +28,73 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // 2. Posun na daný slide
+        // Funkce pro posun na daný slide
         const goToSlide = (index) => {
             if (index < 0 || index >= slides.length) return;
 
             currentIndex = index;
-            // Vypočítáme, jak moc posunout slider doleva
             const offset = -currentIndex * 100; 
             slider.style.transform = `translateX(${offset}vw)`;
 
-            // Aktualizujeme tečky
+            // Aktualizace teček
             dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
                 dot.classList.toggle('active', i === currentIndex);
             });
         };
 
-        // 3. Touch/Swipe logika
-
-        // Start dotyku
+        // Touch/Swipe logika
         container.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             isDragging = true;
-            // Zabráníme vertikálnímu posunu rodiče (projektu)
-            // e.stopPropagation(); 
         }, { passive: true });
 
-        // Pohyb dotyku
-        container.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            // Povolíme standardní chování, ale zaznamenáme pohyb
-            // e.preventDefault(); // POZOR: Toto by zablokovalo vertikální scroll!
-        }, { passive: true });
-
-
-        // Konec dotyku
         container.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
             
             const endX = e.changedTouches[0].clientX;
-            const diffX = startX - endX; // Pozitivní pro swipe doleva
+            const diffX = startX - endX; 
 
             if (diffX > threshold) {
-                // Swipe doleva (na další obrázek)
                 goToSlide(currentIndex + 1);
             } else if (diffX < -threshold) {
-                // Swipe doprava (na předchozí obrázek)
                 goToSlide(currentIndex - 1);
             } else {
-                // Vrátíme se na aktuální obrázek (pokud nebyl dostatečný swipe)
                 goToSlide(currentIndex); 
             }
         });
 
-        // Inicializace
-        createDots();
-        goToSlide(0); // Ujistíme se, že začínáme na prvním obrázku
+        // Inicializace slideru
+        if (slides.length > 0) {
+             createDots();
+             goToSlide(0); 
+        }
     });
+
+    // === 2. LOGIKA ROZBALENÍ TEXTU ("JEŠTĚÉÉ") ===
+
+    const moreButtons = document.querySelectorAll('.btn-more');
+
+    moreButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            // Najdeme nejbližší rodičovskou sekci (.project-slide)
+            const slide = e.target.closest('.project-slide');
+            
+            // Najdeme krátký a dlouhý popis v této sekci
+            const shortDesc = slide.querySelector('.project-description-short');
+            const fullDesc = slide.querySelector('.project-description-full');
+
+            if (fullDesc && shortDesc) {
+                // Přepínáme třídu 'visible' na dlouhém popisu
+                const isVisible = fullDesc.classList.toggle('visible');
+
+                // Přepínáme viditelnost krátkého popisu
+                shortDesc.classList.toggle('hidden', isVisible);
+                
+                // Změna textu tlačítka
+                button.textContent = isVisible ? 'ZAVŘÍT' : 'JEŠTĚÉÉ';
+            }
+        });
+    });
+
 });
