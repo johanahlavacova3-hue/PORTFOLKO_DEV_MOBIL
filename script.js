@@ -1,9 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
     // === 1. LOGIKA SLIDERU (Horizontální swipe) ===
     
-    const sliderContainers = document.querySelectorAll('.image-slider-container');
+    // Nyní hledáme vnější wrapper, abychom mohli detekovat swipe
+    const sliderWrappers = document.querySelectorAll('.image-slider-wrapper');
 
-    sliderContainers.forEach(container => {
+    sliderWrappers.forEach(wrapper => {
+        const container = wrapper.querySelector('.image-slider-container');
         const slider = container.querySelector('.image-slider');
         const slides = container.querySelectorAll('.slide-item');
         const dotsContainer = container.querySelector('.slider-dots-container');
@@ -11,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let startX = 0;
         let isDragging = false;
         const threshold = 50; 
+        const slideWidth = 320; // Pevná šířka slidu v pixelech
 
         // Funkce pro vytvoření navigačních teček
         const createDots = () => {
@@ -28,13 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Funkce pro posun na daný slide
+        // Funkce pro posun na daný slide (posouváme o pevnou šířku 320px)
         const goToSlide = (index) => {
             if (index < 0 || index >= slides.length) return;
 
             currentIndex = index;
-            const offset = -currentIndex * 100; 
-            slider.style.transform = `translateX(${offset}vw)`;
+            // Posuneme o NÁSOBEK pevné šířky
+            const offset = -currentIndex * slideWidth; 
+            slider.style.transform = `translateX(${offset}px)`;
 
             // Aktualizace teček
             dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
@@ -42,13 +46,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         };
 
-        // Touch/Swipe logika
-        container.addEventListener('touchstart', (e) => {
+        // Touch/Swipe logika - detekujeme na celém wrapperu
+        wrapper.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             isDragging = true;
         }, { passive: true });
 
-        container.addEventListener('touchend', (e) => {
+        wrapper.addEventListener('touchend', (e) => {
             if (!isDragging) return;
             isDragging = false;
             
@@ -77,22 +81,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     moreButtons.forEach(button => {
         button.addEventListener('click', (e) => {
-            // Najdeme nejbližší rodičovskou sekci (.project-slide)
             const slide = e.target.closest('.project-slide');
-            
-            // Najdeme krátký a dlouhý popis v této sekci
             const shortDesc = slide.querySelector('.project-description-short');
             const fullDesc = slide.querySelector('.project-description-full');
+            const btnPlay = slide.querySelector('.btn-play'); // Tlačítko HRAJ!
 
             if (fullDesc && shortDesc) {
-                // Přepínáme třídu 'visible' na dlouhém popisu
                 const isVisible = fullDesc.classList.toggle('visible');
 
-                // Přepínáme viditelnost krátkého popisu
                 shortDesc.classList.toggle('hidden', isVisible);
                 
-                // Změna textu tlačítka
                 button.textContent = isVisible ? 'ZAVŘÍT' : 'JEŠTĚÉÉ';
+
+                // Skryjeme tlačítko HRAJ! (nebo ho necháme)
+                // Pokud chceme HRAJ! skrýt, když je rozbaleno JEŠTĚÉÉ:
+                // if (btnPlay) {
+                //     btnPlay.style.display = isVisible ? 'none' : 'block';
+                // }
             }
         });
     });
