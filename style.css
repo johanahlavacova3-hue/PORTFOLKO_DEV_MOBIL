@@ -1,9 +1,9 @@
 :root {
-    --black: #ffffff;
-    --white: #000000;
+    --black: #000000;
+    --white: #ffffff;
     --lime-green: #84FF00; 
-    --text-color: var(--white);
-    --bg-color: var(--black);
+    --text-color: var(--black);
+    --bg-color: var(--white);
     --dot-color: #666;
     --dot-active-color: var(--white);
 }
@@ -47,16 +47,16 @@ body {
 /* === ÚVODNÍ HERO SLIDE === */
 .hero-slide {
     justify-content: space-between;
-    padding-top: 50px;
+    padding-top: 500px;
     background-color: var(--bg-color); /* Nebo jakékoliv pozadí */
 }
 
 .hero-content {
-    text-align: center;
+    text-align: left;
     width: 100%;
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: 10%;
     transform: translate(-50%, -50%);
 }
 
