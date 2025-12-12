@@ -1,0 +1,170 @@
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --lime-green: #90ee02; /* Barva pro HRAJ! */
+    --text-color: var(--white);
+    --bg-color: var(--black);
+    --dot-color: #666;
+    --dot-active-color: var(--white);
+}
+
+/* Základní reset a písmo */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    background-color: var(--bg-color);
+    overflow: hidden; /* Skryjeme standardní scrollbar */
+}
+
+/* Kontejner pro celé portfolio - nastavení pro VERTICÁLNÍ scroll-snap (jako Reels) */
+#portfolio-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch; /* Zlepšení scrollingu na iOS */
+}
+
+/* Jednotlivá slide - JEDEN PROJEKT */
+.project-slide {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Text dole, obrázek nahoře */
+    align-items: center;
+    scroll-snap-align: start; /* Scroll-snap bod */
+    padding-bottom: 50px; /* Mezera pro spodní text */
+    position: relative;
+}
+
+/* Obrázková část */
+.image-slider-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Obrázek zabírá celou plochu */
+    overflow: hidden;
+}
+
+/* Kontejner pro HORIZONTÁLNÍ posouvání obrázků (jako Prezentace) */
+.image-slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-out; /* Animace pro přesun obrázku */
+    /* Obrázky se budou posouvat pomocí JS, ne CSS scroll-snap */
+}
+
+.slide-item {
+    flex-shrink: 0; /* Zabrání zmenšení obrázku */
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #333; /* Placeholder pro pozadí obrázků */
+}
+
+.slide-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Obrázek pokryje celou plochu bez zkreslení */
+}
+
+/* Tečky pro navigaci obrázků */
+.slider-dots-container {
+    position: absolute;
+    bottom: 300px; /* Umístění teček nad textovým obsahem */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    background-color: var(--dot-color);
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: var(--dot-active-color);
+}
+
+/* Textový obsah - musí být nad obrázkem (vyšší z-index) */
+.text-content {
+    position: relative;
+    z-index: 20; /* Zajištění, že text je nad obrázkem */
+    width: 90%;
+    max-width: 400px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project-title {
+    font-size: 4em;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.project-date {
+    font-size: 1.5em;
+    font-weight: 900;
+    margin-bottom: 5px;
+}
+
+.project-tags {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--lime-green);
+    margin-bottom: 10px;
+}
+
+.project-description {
+    font-size: 1em;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.btn-play {
+    display: block;
+    text-align: center;
+    padding: 15px 30px;
+    background-color: var(--lime-green);
+    color: var(--black);
+    text-decoration: none;
+    font-weight: 900;
+    border-radius: 5px;
+    transition: opacity 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-more {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9em;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-transform: uppercase;
+    padding: 10px 0;
+}
+
+/* Styl pro šipky, pokud by byly použity (pro PC), ale na mobilu se spoléháme na swipe */
+/* Můžete je přidat, ale pro mobil je swipe primární */
