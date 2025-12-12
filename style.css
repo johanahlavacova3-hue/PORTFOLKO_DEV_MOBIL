@@ -1,7 +1,7 @@
 :root {
-    --black: #000001;
-    --white: #ffffff;
-    --lime-green: #90ee02; 
+    --black: #ffffff;
+    --white: #000000;
+    --lime-green: #84FF00; 
     --text-color: var(--white);
     --bg-color: var(--black);
     --dot-color: #666;
@@ -61,13 +61,13 @@ body {
 }
 
 .hero-title {
-    font-size: clamp(2.5em, 10vw, 4em);
+    font-size: clamp(2.5em, 6vw, 4em);
     font-weight: 900;
     line-height: 1.1;
 }
 
 .hero-subtitle {
-    font-size: clamp(0.9em, 3vw, 1.2em);
+    font-size: clamp(0.9em, 1.5vw, 1.2em);
     color: #aaa;
     margin-top: 10px;
 }
@@ -78,7 +78,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    font-size: 0.8em;
+    font-size: 0.4em;
     font-weight: bold;
 }
 
@@ -125,12 +125,12 @@ body {
 .contact-link {
     text-decoration: none;
     color: var(--white);
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: 900;
 }
 
 .footer-text {
-    font-size: 0.7em;
+    font-size: 0.4em;
     color: #444;
     margin-top: 40px;
 }
@@ -202,20 +202,20 @@ body {
 }
 
 .project-title {
-    font-size: 4em;
+    font-size: 2em;
     font-weight: 900;
     line-height: 1;
     margin-bottom: 5px;
 }
 
 .project-date {
-    font-size: 1.5em;
+    font-size: 1em;
     font-weight: 900;
     margin-bottom: 5px;
 }
 
 .project-tags {
-    font-size: 0.8em;
+    font-size: 1em;
     font-weight: bold;
     color: var(--lime-green);
     margin-bottom: 10px;
@@ -266,7 +266,7 @@ body {
     border: none;
     color: var(--text-color);
     font-family: 'Inter', sans-serif;
-    font-size: 0.9em;
+    font-size: 0.8em;
     font-weight: bold;
     cursor: pointer;
     text-align: left; /* Zarovnání k textu */
