@@ -1,6 +1,6 @@
 :root {
     --black: #000000;
-    --white: #ffffff; /* Změnil jsem zpět na bílou pro pozadí */
+    --white: #888888; /* Změnil jsem zpět na bílou pro pozadí */
     --lime-green: #84FF00;
     --text-color: var(--black);
     --bg-color: var(--white);
