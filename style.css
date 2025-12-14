@@ -1,14 +1,14 @@
 :root {
     --black: #000000;
     --white: #ffffff;
-    --lime-green: #84FF00;
+    --lime-green: #888888;
     --text-color: var(--black);
     --bg-color: var(--white);
     --dot-color: #ccc;
     --dot-active-color: var(--black);
 }
 
-/* Základní reset a písmo */
+/* Základní reset a písmo 84FF00 */
 * {
     box-sizing: border-box;
     margin: 0;
