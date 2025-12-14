@@ -5,18 +5,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     sliderWrappers.forEach(wrapper => {
         const container = wrapper.querySelector('.image-slider-container');
+        // Přidáváme kontrolu, jestli existuje slider a dotsContainer, 
+        // protože HERO slide je nemá a kód by mohl selhat.
+        if (!container) return; 
+
         const slider = container.querySelector('.image-slider');
         const slides = container.querySelectorAll('.slide-item');
         const dotsContainer = container.querySelector('.slider-dots-container');
+
+        // Pokud v daném kontejneru nejsou slidy (např. v kontaktní sekci), přeskočíme
+        if (!slides || slides.length === 0) return;
         
         let currentIndex = 0;
         let startX = 0;
         let isDragging = false;
         
-        // Zde změna: nefixujeme šířku, ale načítáme ji z elementu
         const getSlideWidth = () => container.clientWidth;
 
         const createDots = () => {
+            if (!dotsContainer) return;
             dotsContainer.innerHTML = ''; 
             slides.forEach((_, index) => {
                 const dot = document.createElement('div');
@@ -34,18 +41,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (index < 0 || index >= slides.length) return;
             currentIndex = index;
             
-            // Dynamický výpočet posunu podle aktuální šířky kontejneru
             const currentWidth = getSlideWidth();
             const offset = -currentIndex * currentWidth;
             
             slider.style.transform = `translateX(${offset}px)`;
 
-            dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
+            if (dotsContainer) {
+                dotsContainer.querySelectorAll('.dot').forEach((dot, i) => {
+                    dot.classList.toggle('active', i === currentIndex);
+                });
+            }
         };
 
-        // Swipe eventy
+        // ... (Swipe eventy zůstávají beze změny) ...
+
         wrapper.addEventListener('touchstart', (e) => {
             startX = e.touches[0].clientX;
             isDragging = true;
@@ -64,23 +73,20 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (diffX < -threshold) {
                 goToSlide(currentIndex - 1);
             } else {
-                goToSlide(currentIndex); // Návrat zpět
+                goToSlide(currentIndex);
             }
         });
 
-        // Ošetření změny velikosti okna (aby se slider nerozhodil při otočení mobilu)
         window.addEventListener('resize', () => {
             goToSlide(currentIndex);
         });
 
-        if (slides.length > 0) {
-             createDots();
-             goToSlide(0); 
-        }
+        createDots();
+        goToSlide(0);
     });
 
 
-    // === 2. LOGIKA ROLOVÁNÍ TEXTU ("JEŠTĚÉÉ") ===
+    // === 2. LOGIKA ROLOVÁNÍ TEXTU ("JEŠTĚÉÉ") - OPRAVENO ===
     const moreButtons = document.querySelectorAll('.btn-more');
 
     moreButtons.forEach(button => {
@@ -90,10 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const fullDesc = slide.querySelector('.project-description-full');
             
             if (fullDesc && shortDesc) {
-                // Toggle třídy 'visible' spustí CSS animaci
                 const isExpanded = fullDesc.classList.toggle('visible');
                 
-                // Krátký popisek skryjeme (třída .hidden v CSS má opacity: 0)
+                // Toggle třídy 'hidden' na krátkém popisku
+                // Tato třída je nyní správně definována v CSS tak, aby element skryla
                 shortDesc.classList.toggle('hidden', isExpanded);
                 
                 button.textContent = isExpanded ? 'ZAVŘÍT' : 'JEŠTĚÉÉ';
