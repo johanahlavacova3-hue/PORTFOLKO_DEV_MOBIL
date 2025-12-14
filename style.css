@@ -31,58 +31,118 @@ body {
     -webkit-overflow-scrolling: touch; 
 }
 
-/* Jednotlivá slide - NOVÉ ROZLOŽENÍ */
+/* Jednotlivá slide - NOVÉ OKRAJE (10px nahoře / 50px dole) */
 .project-slide {
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Start odshora */
+    justify-content: flex-start;
     align-items: center; 
     scroll-snap-align: start; 
-    padding: 0; /* Padding odebereme, použijeme marginy uvnitř */
+    padding: 0 5%;
     position: relative;
-    /* TADY PŘIDÁME MÍSTO PRO NÁZEV PROJEKTU A SPODNÍ OBSAH */
-    padding-top: 50px; /* Místo pro název */
-    padding-bottom: 30px; /* Místo pro kontaktní info */
+    
+    /* VÝŠKOVÉ ÚPRAVY */
+    padding-top: 10px;    /* 10px nahoře */
+    padding-bottom: 50px; /* 50px dole */
 }
 
-/* === ÚVODNÍ HERO SLIDE (Beze změny v rozložení) === */
+/* === ÚVODNÍ HERO SLIDE === */
 .hero-slide {
     justify-content: flex-start; 
     align-items: flex-start; 
-    padding: 50px 5% 50px 5%; /* Vrátíme původní padding pro HERO */
+    /* Upravíme padding, aby odpovídal novým okrajům, ale zachoval rozložení */
+    padding: 10px 5% 50px 5%; 
 }
-/* ... ostatní styly hero-slide zůstávají stejné ... */
 
-/* === OBRÁZKOVÁ SEKCE PROJEKTŮ (FLEXIBILNÍ) === */
+.hero-image-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    order: 2;
+}
 
-/* Wrapper pro centrování rámečku na obrazovce */
+.hero-png {
+    height: 30vh;
+    max-height: 250px; /* Mírné snížení max. výšky */
+    width: auto;
+    object-fit: contain;
+}
+
+.hero-content {
+    text-align: left;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    order: 1;
+}
+
+.hero-title {
+    font-size: clamp(2.5em, 10vw, 4em);
+    font-weight: 900;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: clamp(0.9em, 3vw, 1.2em);
+    margin-top: 10px;
+}
+
+/* === TITULEK PROJEKTŮ (NOVÉ UMÍSTĚNÍ) === */
+.project-title {
+    font-size: clamp(1.8em, 8vw, 2.5em); 
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    position: absolute; 
+    top: 10px; /* Zarovnáme s horním paddingem (10px) */
+    width: 90%;
+    max-width: 350px; /* Stejná max. šířka jako u obrázku */
+    z-index: 30;
+}
+
+/* === OBRÁZKOVÁ SEKCE PROJEKTŮ (Čtvercový poměr 1:1) === */
+
 .image-slider-wrapper {
-    /* Místo 'absolute' použijeme 'relative' a plnou šířku */
     width: 100%;
     height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    /* Dříve top: 15vh; nyní je to v toku dokumentu */
     pointer-events: none;
-    margin-top: 10px; /* Malý odstup od titulku */
-    margin-bottom: 20px; /* Odstup od textového obsahu */
+    margin-top: 10px; 
+    margin-bottom: 20px;
 }
 
 .image-slider-container {
-    pointer-events: auto; 
-    width: 100%; /* Vyplní celý wrapper */
-    max-width: 400px;
-    aspect-ratio: 4 / 5; 
-    background-color: #333; /* Tmavší pozadí jako na obrázku */
+    pointer-events: auto;  
+    width: 100%; 
+    max-width: 350px;
+    aspect-ratio: 1 / 1; /* Čtvercový poměr stran */
+    
+    background-color: #333;
     overflow: hidden;
     position: relative;
     border-radius: 0;
 }
 
-/* ... styly pro .image-slider, .slide-item, .slide-item img zůstávají stejné ... */
+.image-slider {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-out; 
+}
+
+.slide-item {
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .slide-item img {
     width: 100%;
@@ -90,20 +150,36 @@ body {
     object-fit: cover;
 }
 
+.slider-dots-container {
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
 
-/* === TEXTOVÝ OBSAH PROJEKTŮ - NOVÉ ROZLOŽENÍ === */
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--dot-color);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.dot.active {
+    background-color: var(--dot-active-color);
+}
+
+
+/* === TEXTOVÝ OBSAH PROJEKTŮ === */
 .text-content {
     position: relative;
     z-index: 20; 
-    width: 90%; /* Zpět k flexibilní šířce 90% */
-    max-width: 400px;
+    width: 90%; 
+    max-width: 350px; /* Stejná max. šířka jako u obrázku */
     text-align: left;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding-top: 0; /* Odstraníme padding */
-    margin-top: -15px; /* Posuneme text nahoru, aby se překrýval s obrázkem */
-    /* Použijeme flexbox pro umístění HRAJ! a JEŠTĚÉÉ */
     display: grid;
     grid-template-areas: 
         "date tags"
@@ -112,25 +188,16 @@ body {
         "more play";
     grid-template-columns: 1fr max-content;
     align-items: center;
+    gap: 5px; /* Snížíme mezery pro úsporu místa */
+    padding-top: 0; 
+    margin-top: -15px; 
+    padding-bottom: 20px; /* Mírný spodní padding pro grid */
 }
 
-.project-title {
-    /* Titul teď umístíme MIMO text-content, nad obrázek */
-    font-size: clamp(1.8em, 8vw, 3em);
-    font-weight: 900;
-    text-transform: uppercase;
-    text-align: center;
-    position: absolute; /* Úplné umístění nahoře */
-    top: 50px;
-    width: 100%;
-    z-index: 30;
-}
-
-/* Upravené mřížky pro text-content */
 .project-date {
     grid-area: date;
     font-size: 0.9em;
-    color: var(--black); /* Plná barva */
+    color: var(--black);
     font-weight: 900;
 }
 
@@ -138,7 +205,7 @@ body {
     grid-area: tags;
     font-size: 0.75em;
     font-weight: bold;
-    color: #FF7700; /* Oranžová barva jako na obrázku */
+    color: #FF7700;
     text-align: right;
 }
 
@@ -155,7 +222,7 @@ body {
     grid-area: full;
     width: 100%;
     position: relative;
-    margin-bottom: 10px;
+    margin-bottom: 5px; /* Snížíme mezeru */
 }
 
 .project-description-full {
@@ -165,22 +232,35 @@ body {
     transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out;
 }
 
+.project-description-full p {
+    padding-top: 5px; /* Snížíme odstup */
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
 .project-description-full.visible {
     max-height: 500px;
     opacity: 1;
+}
+
+.project-description-short.hidden {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    pointer-events: none;
 }
 
 /* TLAČÍTKO JEŠTĚÉÉ - BEZ RÁMEČKU */
 .btn-more {
     grid-area: more;
     background: none;
-    border: none; /* Odstraníme rámeček */
-    padding: 5px 0; /* Jen malý vertikální padding */
+    border: none;
+    padding: 5px 0;
     font-weight: 900;
     font-size: 0.9em;
     cursor: pointer;
-    align-self: flex-start;
-    color: #999; /* Šedá barva jako na obrázku */
+    align-self: center;
+    color: #999;
     text-align: left;
     margin-top: 0;
     transition: color 0.2s;
@@ -190,24 +270,22 @@ body {
     color: var(--black);
 }
 
-/* TLAČÍTKO HRAJ! - S RADIUSEM A Vpravo */
+/* TLAČÍTKO HRAJ! - S RADIUSEM */
 .btn-play {
     grid-area: play;
-    /* Odstraníme 'position: absolute' pro grid */
     position: static;
     font-size: 1.2em;
     font-weight: 900;
     color: var(--black);
     text-decoration: none;
     background-color: var(--lime-green);
-    padding: 8px 15px;
-    transform: none; /* Odstraníme otočení */
+    padding: 6px 15px; /* Mírně snížíme padding pro kompaktnost */
+    transform: none;
     border-radius: 50px; /* Zaoblený rámeček */
     text-align: center;
-    justify-self: end; /* Zarovnání doprava v gridu */
+    justify-self: end;
 }
 
-/* Změna barvy pro HRAJ! pro lepší viditelnost */
 .btn-play:hover {
     background-color: #a0ff33;
 }
@@ -215,7 +293,7 @@ body {
 /* Spodní indikátor šipky */
 .scroll-indicator {
     position: absolute;
-    bottom: 5px; /* Posuneme blíž ke spodní hraně obrazovky */
+    bottom: 10px; /* Posunutí nahoru z 50px paddingu */
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
