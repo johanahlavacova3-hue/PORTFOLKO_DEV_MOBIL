@@ -1,14 +1,13 @@
 :root {
     --black: #000000;
     --white: #ffffff;
-    --lime-green: #84FF00; /* Zelená barva z vaší definice */
+    --lime-green: #84FF00;
     --text-color: var(--black);
     --bg-color: var(--white);
-    --dot-color: #666;
-    --dot-active-color: var(--black); /* Tečky budou černé na bílém pozadí */
+    --dot-color: #ccc;
+    --dot-active-color: var(--black);
 }
 
-/* Základní reset a písmo */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -22,7 +21,6 @@ body {
     overflow: hidden; 
 }
 
-/* Kontejner pro celé portfolio - nastavení pro VERTICÁLNÍ scroll-snap */
 #portfolio-container {
     width: 100vw;
     height: 100vh;
@@ -31,36 +29,36 @@ body {
     -webkit-overflow-scrolling: touch; 
 }
 
-/* Jednotlivá slide - JEDEN PROJEKT/SEKCE */
 .project-slide {
     width: 100vw;
     height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-end; 
-    align-items: center; /* Centrování obsahu horizontálně */
+    align-items: center;
     scroll-snap-align: start; 
-    padding: 0 5% 50px 5%; 
+    padding: 0 5% 40px 5%; 
     position: relative;
 }
 
-/* === ÚVODNÍ HERO SLIDE (Změna rozložení) === */
+/* === HERO SEKCE === */
 .hero-slide {
-    justify-content: flex-start; /* Zarovnáme obsah nahoru */
-    align-items: flex-start; /* Zarovnáme do leva */
-    padding-top: 50px; /* Horní padding */
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding-top: 50px;
 }
 
 .hero-image-container {
     width: 100%;
     display: flex;
-    justify-content: center; /* Centrování PNG obrázku */
+    justify-content: center;
     margin-bottom: 30px;
-    order: 2; /* Umístí obrázek jako druhý prvek */
+    order: 2;
 }
 
 .hero-png {
-    height: 300px; /* Pevná výška PNG */
+    height: 30vh;
+    max-height: 300px;
     width: auto;
     object-fit: contain;
 }
@@ -70,18 +68,17 @@ body {
     width: 100%;
     max-width: 400px;
     margin-bottom: 20px;
-    order: 1; /* Umístí titul jako první prvek */
+    order: 1;
 }
 
 .hero-title {
-    font-size: clamp(2.5em, 10vw, 4em); /* Použijeme větší škálování pro titul */
+    font-size: clamp(2.5em, 10vw, 4em);
     font-weight: 900;
     line-height: 1.1;
 }
 
 .hero-subtitle {
     font-size: clamp(0.9em, 3vw, 1.2em);
-    color: var(--text-color); /* Mělo by být černé */
     margin-top: 10px;
 }
 
@@ -93,37 +90,43 @@ body {
     text-align: center;
     font-size: 0.8em;
     font-weight: bold;
-    color: var(--black);
-    order: 3; /* Umístí indikátor jako třetí prvek */
+    order: 3;
 }
 
 .arrow-down {
-    border-top: 8px solid var(--black); /* Černá šipka na bílém pozadí */
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid var(--black);
+    margin: 5px auto 0 auto;
 }
 
-/* === OBRÁZKOVÁ SEKCE PROJEKTŮ (Pevný rámeček 320x360px) === */
-
-/* Wrapper pro centrování rámečku na obrazovce */
+/* === FLEXIBILNÍ SLIDER === */
 .image-slider-wrapper {
-    width: 100vw;
-    height: auto;
+    width: 100%;
+    /* Flexibilní výška pro umístění */
+    position: absolute;
+    top: 15vh; 
+    left: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    position: absolute;
-    top: 50px; /* Umístění shora, aby nepřekrývalo text dole */
+    pointer-events: none; /* Aby šlo klikat přes prázdná místa, pokud je třeba */
 }
 
 .image-slider-container {
-    position: static; /* Resetujeme z "absolute" */
-    width: 320px; /* Pevná šířka rámečku */
-    height: 360px; /* Pevná výška rámečku */
+    pointer-events: auto; /* Vrátíme interakci pro slider */
+    /* FLEXIBILNÍ ROZMĚRY */
+    width: 85%; /* 85% šířky obrazovky */
+    max-width: 400px; /* Ale ne víc než 400px */
+    aspect-ratio: 4 / 5; /* Udrží poměr stran (např. 4:5), výška se dopočítá */
+    
+    background-color: #f0f0f0;
     overflow: hidden;
-    margin-bottom: auto; /* Tlačí text dolů */
-    background-color: var(--dot-color); /* Barva rámečku/pozadí */
+    position: relative;
+    border-radius: 4px; /* Volitelné: jemné zaoblení */
 }
 
-/* Kontejner pro HORIZONTÁLNÍ posouvání obrázků (320px široký) */
 .image-slider {
     display: flex;
     width: 100%;
@@ -133,8 +136,8 @@ body {
 
 .slide-item {
     flex-shrink: 0;
-    width: 320px; /* Obrázek se posouvá o 320px */
-    height: 360px;
+    width: 100%; /* Slide zabírá 100% šířky kontejneru */
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -143,14 +146,25 @@ body {
 .slide-item img {
     width: 100%;
     height: 100%;
-    object-fit: cover; 
+    object-fit: cover; /* Obrázek vyplní plochu a ořízne se */
 }
 
-/* Tečky pro navigaci obrázků */
 .slider-dots-container {
     position: absolute;
-    bottom: 10px; /* Umístění teček uvnitř rámečku */
-    /* Zbytek je stejný */
+    bottom: 15px;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: var(--dot-color);
+    border-radius: 50%;
+    cursor: pointer;
 }
 
 .dot.active {
@@ -158,7 +172,7 @@ body {
 }
 
 
-/* === TEXTOVÝ OBSAH PROJEKTŮ === */
+/* === TEXTOVÝ OBSAH A ROLOVÁNÍ === */
 .text-content {
     position: relative;
     z-index: 20; 
@@ -167,19 +181,111 @@ body {
     text-align: left;
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    /* Zajistíme, že tlačítko HRAJ! bude na konci flex kontejneru */
+    gap: 8px;
+    background: linear-gradient(to top, var(--white) 80%, rgba(255,255,255,0)); /* Čitelnost textu přes obrázek */
+    padding-top: 20px;
 }
 
-/* Aby tlačítko HRAJ! bylo vždy dole */
-.btn-play {
-    margin-top: auto; /* Posune se na konec flex kontejneru */
-    order: 100; /* Zajišťuje, že je poslední bez ohledu na ostatní */
-    /* Zbytek stylů je stejný */
+.project-title {
+    font-size: 1.8em;
+    font-weight: 900;
+    text-transform: uppercase;
 }
 
-/* Styly pro JEŠTĚÉÉ a popisy zůstávají podobné */
+.project-date {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.project-tags {
+    font-size: 0.75em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.description-wrapper {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.project-description-short {
+    font-size: 0.9em;
+    line-height: 1.4;
+    transition: opacity 0.3s ease;
+}
+
+/* TOTO JE KÓD PRO ROLOVÁNÍ */
 .project-description-full {
-    /* ... */
+    max-height: 0; /* Ve výchozím stavu skryto */
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out; /* Plynulá animace */
 }
-/* ... ostatní styly ... */
+
+.project-description-full p {
+    padding-top: 10px; /* Odstup */
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+/* Třída pro aktivní stav (přidá JS) */
+.project-description-full.visible {
+    max-height: 500px; /* Hodnota musí být větší než reálný text */
+    opacity: 1;
+}
+
+/* Skrývání krátkého popisu */
+.project-description-short.hidden {
+    opacity: 0;
+    position: absolute; /* Aby nezabíral místo při animaci */
+    top: 0;
+    pointer-events: none;
+}
+
+.btn-more {
+    background: none;
+    border: 2px solid var(--black);
+    padding: 10px 20px;
+    font-weight: 900;
+    font-size: 0.9em;
+    cursor: pointer;
+    align-self: flex-start;
+    margin-top: 5px;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-more:hover {
+    background: var(--black);
+    color: var(--white);
+}
+
+.btn-play {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 1.5em; /* Větší jako v původním návrhu */
+    font-weight: 900;
+    color: var(--black);
+    text-decoration: none;
+    background-color: var(--lime-green); /* Zvýraznění */
+    padding: 5px 10px;
+    transform: rotate(-5deg); /* Stylové natočení */
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.contact-link {
+    font-size: 1.5em;
+    font-weight: 900;
+    color: var(--black);
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+.contact-link:hover {
+    border-bottom: 2px solid var(--black);
+}
