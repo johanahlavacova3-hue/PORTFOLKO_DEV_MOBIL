@@ -1,14 +1,14 @@
 :root {
     --black: #000000;
     --white: #ffffff;
-    --lime-green: #888888;
+    --lime-green: #84FF00;
     --text-color: var(--black);
     --bg-color: var(--white);
     --dot-color: #ccc;
     --dot-active-color: var(--black);
 }
 
-/* Základní reset a písmo 84FF00 */
+/* Základní reset a písmo */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -19,10 +19,11 @@ body {
     font-family: 'Inter', sans-serif;
     color: var(--text-color);
     background-color: var(--bg-color);
-    overflow: hidden; 
+    overflow-x: hidden; /* KLÍČOVÁ ZMĚNA: ZAKÁŽEME HORIZONTÁLNÍ ROLOVÁNÍ */
+    overflow-y: hidden; /* Původní: overflow: hidden; */
 }
 
-/* Kontejner pro celé portfolio */
+/* Kontejner pro celé portfolio - ZDE POVOLUJEME VERTIKÁLNÍ ROLOVÁNÍ */
 #portfolio-container {
     width: 100vw;
     height: 100vh;
@@ -31,7 +32,7 @@ body {
     -webkit-overflow-scrolling: touch; 
 }
 
-/* Jednotlivá slide - NOVÉ OKRAJE (10px nahoře / 50px dole) */
+/* Jednotlivá slide */
 .project-slide {
     width: 100vw;
     height: 100vh;
@@ -40,21 +41,40 @@ body {
     justify-content: flex-start;
     align-items: center; 
     scroll-snap-align: start; 
-    padding: 0 5%;
+    /* Důležité: padding 0 5% zajišťuje vnitřní okraje */
+    padding: 0 5%; 
     position: relative;
     
-    /* VÝŠKOVÉ ÚPRAVY */
-    padding-top: 10px;    /* 10px nahoře */
-    padding-bottom: 50px; /* 50px dole */
+    padding-top: 10px;
+    padding-bottom: 50px; 
 }
+
+/* === TITULEK PROJEKTŮ - ÚPRAVA ŠÍŘKY === */
+.project-title {
+    font-size: clamp(1.8em, 8vw, 2.5em); 
+    font-weight: 900;
+    text-transform: uppercase;
+    text-align: center;
+    position: absolute; 
+    top: 10px; 
+    width: 90%; /* Zajišťujeme, že šířka je max. 90% rodiče, aby se vešla s 5% paddingem na obou stranách */
+    max-width: 350px;
+    z-index: 30;
+    /* CENTROVÁNÍ TITULKU s absolute position */
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+/* ... Zbytek CSS stylů beze změny ... */
 
 /* === ÚVODNÍ HERO SLIDE === */
 .hero-slide {
     justify-content: flex-start; 
     align-items: flex-start; 
-    /* Upravíme padding, aby odpovídal novým okrajům, ale zachoval rozložení */
     padding: 10px 5% 50px 5%; 
 }
+
+/* ... Pokračování ostatních CSS stylů ... */
 
 .hero-image-container {
     width: 100%;
